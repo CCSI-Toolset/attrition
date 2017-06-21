@@ -1,0 +1,198 @@
+#
+# Simulate a rectangular jet cup
+#
+# Run-control section
+# -----------------------------
+  RUN_NAME = 'attrn_jetcup_box' 
+  DESCRIPTION = '2D jet cup with bottom inlet'
+  RUN_TYPE = 'new'
+  UNITS = 'cgs'
+  TIME  = 0.0 
+  TSTOP = 0.01
+  DT_MIN = 1e-7
+  DT = 1.0e-5
+  DT_MAX = 1E-4
+  MAX_INLET_VEL_FAC = 100.d0
+  NORM_g = 0.0
+
+  ENERGY_EQ 		= .FALSE.		!do not solve energy eq
+  SPECIES_EQ 	= .FALSE.   .FALSE.   
+   
+  MOMENTUM_X_EQ(1) = .FALSE. 
+  MOMENTUM_Y_EQ(1) = .FALSE. 
+  MOMENTUM_Z_EQ(1) = .FALSE.  
+  DRAG_TYPE = 'WEN_YU'
+
+  GRAVITY = 980.0 
+
+
+# Geometry Section
+# -----------------------------
+  COORDINATES = 'cartesian'
+  XLENGTH  = 4.1   !length
+  IMAX = 41
+  YLENGTH  = 10.0   
+  JMAX = 50
+  NO_K     = .TRUE.
+  DZ(1)    = 0.04  
+  
+
+# Numeric
+# -----------------------------
+  MAX_NIT = 250
+  DISCRETIZE = 9*2
+  DEF_COR = .T.
+  LEQ_IT = 9*200
+  LEQ_TOL  = 9*1.0E-6
+  TOL_RESID = 1.0E-3
+
+  LEQ_SWEEP = 9*'ISIS'   
+
+ ! Norm_g = 0.0
+ ! LEQ_IT(1) = 40
+# Gas-phase Section
+# -----------------------------
+!  RO_g0 = 1.20e-3   
+  MU_g0 = 1.8E-4    
+  MW_avg = 29
+
+# Solids-phase Section
+# -----------------------------
+  MMAX     = 1
+  RO_s     = 0.4
+  D_p0     = 0.04
+
+! e must be defined, even in DEM simulations where it is not used
+  e        = 0.9
+
+! phi must be set if MMAX >0, however, it is only used if schaeffer 
+! or friction models are invoked
+  Phi     = 0.0 
+  EP_star = 0.20  
+      
+
+# Initial Conditions Section
+# -----------------------------
+       !             section 1      
+  IC_X_w(1)        =  0.0     
+  IC_X_e(1)        =  4.1
+  IC_Y_s(1)        =  0.0     
+  IC_Y_n(1)        =  10.0
+
+  IC_EP_g(1)       = 1.0         
+ 
+  IC_U_g(1)        = 0.0           
+  IC_V_g(1)        = 10.0
+  
+  IC_U_s(1,1)      = 0.0
+  IC_V_s(1,1)      = 0.0 
+
+  IC_T_g(1)        = 300.0
+  IC_P_g(1)        = 1.0D6 
+
+ # Specify boundary conditions
+! BC are not necessary for pure DEM simulations as particles see all 
+! boundaries as walls unless the boundary is a DEM inlet/outlet (which 
+! is defined later). BC are needed for coupled simulations to define
+! fluid interaction.  
+#--------------------------------
+! Inlet and outlet
+!              inlet1  
+  BC_X_w(1) =  2.0
+  BC_X_e(1) =  2.1 
+  BC_Y_s(1) =  0.0    
+  BC_Y_n(1) =  0.0  
+  BC_TYPE(1)=  'MI'   
+  
+  BC_EP_g(1) = 1.0
+  BC_U_g(1) = 0.0
+  BC_V_g(1) = 15000.0
+  BC_P_g(1) = 1.0D6
+  BC_T_g(1) = 300.0
+
+
+!              outlet
+  BC_X_w(2) =  1.0
+  BC_X_e(2) =  3.1
+  BC_Y_s(2) =  10.0
+  BC_Y_n(2) =  10.0
+  BC_TYPE(2)=  'PO'
+
+  BC_P_g(2) = 1.0D6
+  BC_T_g(2) = 300.0
+   
+#  Output Control
+# -----------------------------
+  RES_DT = 0.01     ! interval at which restart (.RES) file is updated
+  OUT_DT = 1.      ! interval at which standard output (.OUT) file is updated
+  NLOG = 25        ! interval in no. of time steps at which (.LOG) file is written
+
+! Interval at which .SPX files are written 
+  SPX_DT(1)  = 0.01      ! Void fraction (EP_g)
+  SPX_DT(2)  = 0.1       ! Gas and solids pressure (P_g, P_star)
+  SPX_DT(3)  = 0.1       ! Gas velocity (U_g, V_g, W_g)
+  SPX_DT(4)  = 0.1       ! Solids velocity (U_s, V_s, W_s)
+  SPX_DT(5)  = 100.0     ! Solids density (ROP_s)
+  SPX_DT(6)  = 100.0     ! Gas and solids temp. (T_g, T_s1, T_s2)
+  SPX_DT(7)  = 100.0     ! Gas and solids mass fractions (X_g, X_s)
+  SPX_DT(8)  = 100.0     ! Granular Temperature (G)
+  SPX_DT(9)  = 100.0     ! User defined scalars
+
+  FULL_LOG = .TRUE.               ! display residuals on screen
+  RESID_STRING = 'P0' 'U0' 'V0'   ! which residuals to display
+
+
+# DMP control
+# -----------------------------
+  NODESI = 8
+  NODESJ = 1
+  NODESK = 1
+
+
+#  DES
+# -----------------------------
+  DISCRETE_ELEMENT = .TRUE. 
+  DES_CONTINUUM_COUPLED = .T.
+  DES_INTERP_ON = .T.
+  WALLDTSPLIT = .T.
+  NFACTOR = 2000
+  DIMN = 2
+  
+!  GENER_PART_CONFIG = .T.
+!  DES_EPS_XSTART = 3.8
+!  DES_EPS_YSTART = 30.0
+!  VOL_FRAC(1) = 0.01
+  PARTICLES_FACTOR = 10
+  PARTICLES = 8000
+
+  DES_NEIGHBOR_SEARCH =  4 
+  NEIGHBOR_SEARCH_N  = 20
+  MN = 20    ! Maximum number of neighbors allowed per particle [20]
+
+  KN       = 1.0D6        ! Normal inter-particle collision spring constant
+  KT_FAC   = @(2.0/7.0)   ! Tangential spring factor = KT/KN   [2/7]
+  KN_W     = 1.0D6        ! Normal particle-wall collision spring constant
+  KT_W_FAC = @(2.0/7.0)   ! Tangential spring factor = KT_W/KN_W   [2/7]
+  MEW      = 0.1          ! Inter-particle friction coeffienct
+  MEW_W    = 0.1          ! Particle-wall friction coefficient
+
+! set the particle-particle restitution coefficient in an array arranged as
+  DES_EN_INPUT      = 0.2
+! particle-wall rest coef arranged in array arranged as
+  DES_EN_WALL_INPUT = 0.2 !particle-wall rest coef
+
+  DES_ETAT_FAC    = @(1/2)  ! damping coefficient factor = ETAT/ETAN   [1/2]
+  DES_ETAT_W_FAC  = @(1/2)  ! damping coefficient factor = ETAT_W/ETAN_W   [1/2]
+
+  PRINT_DES_DATA = .TRUE. ! write DEM data : *.vtp files
+  DES_RES_DT = 0.01       
+  DES_SPX_DT = 0.01       ! interval to write *.vtp files in pure DEM simulation
+
+#  Attrition
+# -----------------------------
+  DES_Attrition = .T.
+  FractureHardness = 2.9D9 !NaCl property in Ghadiri and Zhang
+  FractureToughness = 3.0D7 !NaCl property in Ghadiri and Zhang
+  DESAlpha = 4.3D-4  !NaCl property in Ghadiri and Zhang
+  ABRAlpha = 4.3D-7  !Assumed to be 1E-3 of chipping coefficient
+  DESAttritionThresh = 1200.0
