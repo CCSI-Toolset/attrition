@@ -3,7 +3,7 @@ A coupled computational flluid dynamic (CFD)-DEM MFIX model to investigate the a
 
 ## Getting Started
 
-See installaton and user guide documents in the [documentation](docs) subdirectory.
+See installation and user guide documents in the [documentation](docs) subdirectory.
 
 ## Authors
 
@@ -11,7 +11,7 @@ See installaton and user guide documents in the [documentation](docs) subdirecto
 * Brett Okhuysen
 * Wesley Xu
 
-See also the list of [contributors](https://github.com/CCSI-Toolset/attrition/contributors) who participated in this project.
+See also the list of [contributors](../../contributors) who participated in this project.
 
 ## Development Practices
 
@@ -26,7 +26,7 @@ See also the list of [contributors](https://github.com/CCSI-Toolset/attrition/co
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, 
-see the [tags on this repository](https://github.com/attrition/tags). 
+see the [releases](../../releases) or [tags](../../tags) on this repository. 
 
 ## License & Coppyright
 
