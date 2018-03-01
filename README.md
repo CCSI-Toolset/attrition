@@ -1,7 +1,7 @@
-[![Build Status](https://keeling.lbl.gov:8080/buildStatus/icon?job=attrition)](https://keeling.lbl.gov:8080/job/attrition)
-
 # Attrition Model: An MFIX-based model to predict particle attrition.
 A coupled computational flluid dynamic (CFD)-DEM MFIX model to investigate the attrition of initially monodispersed solid particles in a jet cup.
+
+Note: this product is also part of the [CFDModels_bundle](../../../CFDModels_bundle)
 
 ## Getting Started
 
